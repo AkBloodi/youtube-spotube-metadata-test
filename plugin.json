@@ -1,0 +1,12 @@
+{
+  "id": "youtube-metadata-provider",
+  "name": "YouTube Music Metadata",
+  "version": "1.0.0",
+  "author": "Gemini CLI",
+  "description": "Provee metadatos de canciones, álbumes y artistas desde YouTube Music",
+  "entryPoint": "YouTubeMetadataPlugin",
+  "abilities": ["metadata"],
+  "apis": ["localstorage"],
+  "pluginApiVersion": "2.0.0",
+  "repository": "https://github.com/pablo/spotube-youtube-plugin"
+}
