@@ -1,0 +1,62 @@
+name: Plugin Build
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: 'Version (x.x.x)'
+        required: false
+        default: 'dev'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Install dependencies
+        run: dart pub global activate hetu_script_dev_tools
+
+      - name: Add Pub Bin to Path
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      - name: Build plugin
+        run: |
+          mkdir -p build
+          hetu compile src/plugin.ht build/plugin.out
+
+      - name: Package plugin
+        run: |
+          mkdir -p build/archive
+          cp plugin.json build/plugin.out build/archive/
+          cd build/archive && zip -r ../spotube-youtube-metadata.smplug .
+          mv build/spotube-youtube-metadata.smplug ./spotube-youtube-metadata.smplug
+
+      - name: Upload plugin archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-archive
+          path: spotube-youtube-metadata.smplug
+
+      - name: Create Release
+        if: github.event_name == 'workflow_dispatch'
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: v${{ github.event.inputs.version }}
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
+          omitPrereleaseDuringUpdate: true
+          allowUpdates: true
+          artifacts: spotube-youtube-metadata.smplug

@@ -1,0 +1,16 @@
+// Auth endpoint for YouTube Music
+
+class AuthEndpoint {
+  fun onAuthEvent() {}
+
+  fun authenticate() {
+    // YouTube Music doesn't require auth for metadata
+    // This is a passthrough plugin
+  }
+
+  fun logout() {}
+
+  fun isAuthenticated() {
+    return true; // Metadata doesn't require auth
+  }
+}

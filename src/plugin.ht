@@ -1,0 +1,47 @@
+// YouTube Music Metadata Provider Plugin for Spotube
+// Uses hetu_script (Dart-based scripting language)
+
+import "segments/search.ht";
+import "segments/track.ht";
+import "segments/album.ht";
+import "segments/artist.ht";
+import "segments/playlist.ht";
+import "segments/audio_source.ht";
+import "segments/auth.ht";
+import "segments/browse.ht";
+import "segments/user.ht";
+import "segments/core.ht";
+
+class YouTubeMetadataPlugin {
+  var auth;
+  var audioSource;
+  var album;
+  var artist;
+  var browse;
+  var playlist;
+  var search;
+  var track;
+  var user;
+  var core;
+
+  construct() {
+    this.auth = AuthEndpoint();
+    this.audioSource = AudioSourceEndpoint();
+    this.album = AlbumEndpoint();
+    this.artist = ArtistEndpoint();
+    this.browse = BrowseEndpoint();
+    this.core = CoreEndpoint();
+    this.playlist = PlaylistEndpoint();
+    this.search = SearchEndpoint();
+    this.track = TrackEndpoint();
+    this.user = UserEndpoint();
+  }
+
+  fun onLoad() {
+    print("YouTube Metadata Plugin loaded");
+  }
+
+  fun hello() {
+    return "YouTube Metadata Plugin v1.0.0";
+  }
+}

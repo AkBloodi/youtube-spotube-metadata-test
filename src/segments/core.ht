@@ -1,0 +1,15 @@
+// Core endpoint for YouTube Music metadata plugin
+
+class CoreEndpoint {
+  fun checkUpdate(pluginConfig) {
+    return null; // No update available
+  }
+
+  fun support() {
+    return "https://github.com/AkBloodi/youtube-spotube-metadata";
+  }
+
+  fun scrobble(details) {
+    // Scrobbling not implemented
+  }
+}

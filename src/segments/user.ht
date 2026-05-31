@@ -1,0 +1,44 @@
+// User endpoint for YouTube Music metadata
+
+class UserEndpoint {
+  fun me() {
+    return {
+      "id": "anonymous",
+      "name": "YouTube Music User",
+      "email": "",
+      "avatar": ""
+    };
+  }
+
+  fun savedTracks(offset, limit) {
+    return {
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    };
+  }
+
+  fun savedAlbums(offset, limit) {
+    return {
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    };
+  }
+
+  fun savedArtists(offset, limit) {
+    return {
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    };
+  }
+
+  fun savedPlaylists(offset, limit) {
+    return {
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    };
+  }
+}

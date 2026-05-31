@@ -1,7 +1,13 @@
-node_modules/
-*.log
-.DS_Store
-dist/
+# Build output
 build/
 *.smplug
-!spotube-youtube-metadata.smplug
+
+# Dependencies
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store

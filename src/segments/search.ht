@@ -1,0 +1,161 @@
+// Search endpoint for YouTube Music metadata
+// Fetches search results from YouTube Music API
+
+class SearchEndpoint {
+  var apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30";
+  var baseUrl = "https://music.youtube.com/youtubei/v1";
+
+  fun chips() {
+    return [
+      "musicVideos",
+      "albums",
+      "artists",
+      "playlists",
+      "communityPlaylists"
+    ];
+  }
+
+  fun all(query) {
+    var data = this.request("search", {
+      "query": query,
+      "params": "EgWKAQIIAWoKEAMQBBAJEAoQBQ=="
+    });
+    
+    var items = data["contents"]?.["tabbedSearchResultsRenderer"]?.["tabs"]?[0]?.["tabRenderer"]?.["content"]?.["sectionListRenderer"]?.["contents"]?[0]?.["musicShelfRenderer"]?.["contents"] ?? [];
+    
+    var tracks = [];
+    for (var i = 0; i < items.length; i = i + 1) {
+      var item = items[i];
+      var r = item["musicResponsiveListItemRenderer"];
+      if (r != null) {
+        var track = this.parseTrackResult(r);
+        if (track != null) {
+          tracks.push(track);
+        }
+      }
+    }
+    
+    return {"tracks": tracks};
+  }
+
+  fun tracks(query, offset, limit) {
+    var result = this.all(query);
+    var offset = offset ?? 0;
+    var limit = limit ?? 20;
+    var items = result["tracks"].slice(offset, offset + limit);
+    return {
+      "items": items,
+      "total": result["tracks"].length,
+      "hasMore": offset + limit < result["tracks"].length
+    };
+  }
+
+  fun albums(query, offset, limit) {
+    return {
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    };
+  }
+
+  fun artists(query, offset, limit) {
+    return {
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    };
+  }
+
+  fun playlists(query, offset, limit) {
+    return {
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    };
+  }
+
+  fun parseTrackResult(r) {
+    var title = this.t(r["flexColumns"]?[0]?.["musicResponsiveListItemFlexColumnRenderer"]?.["text"]);
+    if (title == "") return null;
+    
+    var subtitleRuns = r["flexColumns"]?[1]?.["musicResponsiveListItemFlexColumnRenderer"]?.["text"]?.["runs"] ?? [];
+    
+    var artists = [];
+    var album = null;
+    var duration = 0;
+    
+    for (var i = 0; i < subtitleRuns.length; i = i + 1) {
+      var run = subtitleRuns[i];
+      var browseId = run["navigationEndpoint"]?.["browseEndpoint"]?.["browseId"];
+      if (browseId != null) {
+        if (browseId.startsWith("UC") || browseId.startsWith("Fm")) {
+          artists.push({"id": browseId, "name": run["text"] ?? ""});
+        } else if (browseId.startsWith("MPRE")) {
+          album = {"id": browseId, "name": run["text"] ?? ""};
+        }
+      } else if (run["text"]?.contains(":") == true) {
+        duration = this.parseDuration(run["text"]);
+      }
+    }
+    
+    var id = r["playlistItemData"]?.["videoId"] ?? r["navigationEndpoint"]?.["watchEndpoint"]?.["videoId"];
+    if (id == null) return null;
+    
+    return {
+      "id": id,
+      "name": title,
+      "artists": artists,
+      "album": album ?? {"id": "", "name": "YouTube Music"},
+      "duration": duration,
+      "artwork": r["thumbnail"]?.["musicThumbnailRenderer"]?.["thumbnail"]?.["thumbnails"]?[0]?.["url"] ?? ""
+    };
+  }
+
+  fun request(endpoint, body) {
+    var url = this.baseUrl + "/" + endpoint + "?key=" + this.apiKey;
+    var payload = {
+      "context": {
+        "client": {
+          "clientName": "WEB_REMIX",
+          "clientVersion": "1.20240522.01.00",
+          "hl": "en",
+          "gl": "US"
+        }
+      }
+    };
+    
+    // Merge body into payload
+    for (var key in body) {
+      payload[key] = body[key];
+    }
+    
+    // Note: This is a mock implementation
+    // In real usage, you'd use fetch() or an HTTP library
+    return {};
+  }
+
+  fun t(obj) {
+    if (obj == null) return "";
+    if (obj["runs"]) {
+      var result = "";
+      for (var i = 0; i < obj["runs"].length; i = i + 1) {
+        result = result + (obj["runs"][i]["text"] ?? "");
+      }
+      return result;
+    }
+    if (obj["simpleText"]) return obj["simpleText"];
+    return "";
+  }
+
+  fun parseDuration(text) {
+    if (text == null || text == "") return 0;
+    var parts = text.split(":");
+    if (parts.length == 2) {
+      return (parts[0].toInt() * 60 + parts[1].toInt()) * 1000;
+    }
+    if (parts.length == 3) {
+      return (parts[0].toInt() * 3600 + parts[1].toInt() * 60 + parts[2].toInt()) * 1000;
+    }
+    return 0;
+  }
+}
