@@ -5,3 +5,4 @@ class UserEndpoint {
     return {"id": "", "name": "Guest"};
   }
 }
+export { UserEndpoint };

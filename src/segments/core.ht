@@ -5,3 +5,4 @@ class CoreEndpoint {
     return {"status": "ok"};
   }
 }
+export { CoreEndpoint };

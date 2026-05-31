@@ -5,3 +5,4 @@ class AlbumEndpoint {
     this.httpClient = httpClient;
   }
 }
+export { AlbumEndpoint };

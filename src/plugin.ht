@@ -1,16 +1,15 @@
 // YouTube Music Metadata Provider Plugin for Spotube
-// Uses hetu_script (Dart-based scripting language)
 
-import "segments/search.ht";
-import "segments/track.ht";
-import "segments/album.ht";
-import "segments/artist.ht";
-import "segments/playlist.ht";
-import "segments/audio_source.ht";
-import "segments/auth.ht";
-import "segments/browse.ht";
-import "segments/user.ht";
-import "segments/core.ht";
+import { SearchEndpoint } from "segments/search.ht";
+import { TrackEndpoint } from "segments/track.ht";
+import { AlbumEndpoint } from "segments/album.ht";
+import { ArtistEndpoint } from "segments/artist.ht";
+import { PlaylistEndpoint } from "segments/playlist.ht";
+import { AudioSourceEndpoint } from "segments/audio_source.ht";
+import { AuthEndpoint } from "segments/auth.ht";
+import { BrowseEndpoint } from "segments/browse.ht";
+import { UserEndpoint } from "segments/user.ht";
+import { CoreEndpoint } from "segments/core.ht";
 
 class YouTubeMetadataPlugin {
   var auth;
@@ -45,3 +44,5 @@ class YouTubeMetadataPlugin {
     return "YouTube Metadata Plugin v1.0.0";
   }
 }
+
+export { YouTubeMetadataPlugin };

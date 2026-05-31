@@ -13,3 +13,4 @@ class PlaylistEndpoint {
     return {"status": "success"};
   }
 }
+export { PlaylistEndpoint };

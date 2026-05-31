@@ -5,3 +5,4 @@ class AudioSourceEndpoint {
     return [];
   }
 }
+export { AudioSourceEndpoint };

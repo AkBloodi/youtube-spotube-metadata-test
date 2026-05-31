@@ -52,3 +52,5 @@ class SearchEndpoint {
     return {"items": [], "total": 0, "hasMore": false};
   }
 }
+
+export { SearchEndpoint };

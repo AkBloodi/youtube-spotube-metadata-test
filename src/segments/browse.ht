@@ -9,3 +9,4 @@ class BrowseEndpoint {
     return {"items": [], "total": 0};
   }
 }
+export { BrowseEndpoint };

@@ -25,3 +25,4 @@ class TrackEndpoint {
     return {"items": [], "total": 0};
   }
 }
+export { TrackEndpoint };
