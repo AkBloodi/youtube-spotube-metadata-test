@@ -1,8 +1,13 @@
+import "module:std" as std
+
+var Future = std.Future
+
 class UserEndpoint {
   construct() {}
 
   fun me() {
-    return {"id": "", "name": "Guest"};
+    return Future.resolve({"id": "", "name": "Guest"})
   }
 }
-export { UserEndpoint };
+
+export { UserEndpoint }

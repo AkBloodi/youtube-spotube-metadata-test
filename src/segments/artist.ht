@@ -1,8 +1,17 @@
-class ArtistEndpoint {
-  var httpClient;
+import "module:std" as std
 
-  construct(httpClient) {
-    this.httpClient = httpClient;
+var Future = std.Future
+
+class ArtistEndpoint {
+  construct() {}
+
+  fun getArtist(id) {
+    return Future.resolve({"items": [], "total": 0})
+  }
+
+  fun tracks(id, {offset, limit}) {
+    return Future.resolve({"items": [], "total": 0})
   }
 }
-export { ArtistEndpoint };
+
+export { ArtistEndpoint }

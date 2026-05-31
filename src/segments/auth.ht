@@ -1,8 +1,13 @@
+import "module:std" as std
+
+var Future = std.Future
+
 class AuthEndpoint {
   construct() {}
 
   fun isAuth() {
-    return false;
+    return Future.resolve(false)
   }
 }
-export { AuthEndpoint };
+
+export { AuthEndpoint }

@@ -1,15 +1,19 @@
 // YouTube Music Metadata Provider Plugin for Spotube
 
-import { SearchEndpoint } from "segments/search.ht";
-import { TrackEndpoint } from "segments/track.ht";
-import { AlbumEndpoint } from "segments/album.ht";
-import { ArtistEndpoint } from "segments/artist.ht";
-import { PlaylistEndpoint } from "segments/playlist.ht";
-import { AudioSourceEndpoint } from "segments/audio_source.ht";
-import { AuthEndpoint } from "segments/auth.ht";
-import { BrowseEndpoint } from "segments/browse.ht";
-import { UserEndpoint } from "segments/user.ht";
-import { CoreEndpoint } from "segments/core.ht";
+import "module:std" as std
+
+import { SearchEndpoint } from './segments/search.ht';
+import { TrackEndpoint } from './segments/track.ht';
+import { AlbumEndpoint } from './segments/album.ht';
+import { ArtistEndpoint } from './segments/artist.ht';
+import { PlaylistEndpoint } from './segments/playlist.ht';
+import { AudioSourceEndpoint } from './segments/audio_source.ht';
+import { AuthEndpoint } from './segments/auth.ht';
+import { BrowseEndpoint } from './segments/browse.ht';
+import { UserEndpoint } from './segments/user.ht';
+import { CoreEndpoint } from './segments/core.ht';
+
+var Future = std.Future
 
 class YouTubeMetadataPlugin {
   var auth;

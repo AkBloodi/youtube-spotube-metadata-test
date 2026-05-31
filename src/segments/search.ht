@@ -1,56 +1,76 @@
+import "module:std" as std
+
+var Future = std.Future
+
 class SearchEndpoint {
   construct() {}
 
-  fun chips() {
-    return ["musicVideos", "albums", "artists", "playlists", "communityPlaylists"];
+  get chips -> List {
+    return ["musicVideos", "albums", "artists", "playlists", "communityPlaylists"]
   }
 
   fun all(query) {
-    // Return mock search results for now
-    return {
-      "tracks": [
+    return Future.wait([
+      this.playlists(query),
+      this.tracks(query),
+    ]).then((results) {
+      var playlistRes = results[0]["items"]
+      var trackRes = results[1]["items"]
+      return this.artists(query).then((ares) {
+        var artistRes = ares["items"]
+        return this.albums(query).then((bres) {
+          var albumRes = bres["items"]
+          return {
+            "playlists": playlistRes,
+            "tracks": trackRes,
+            "artists": artistRes,
+            "albums": albumRes
+          }
+        })
+      })
+    })
+  }
+
+  fun tracks(query, {offset, limit}) {
+    return Future.resolve({
+      "items": [
         {
           "id": "dQw4w9WgXcQ",
           "name": query + " - Result 1",
           "artists": [{"id": "UC", "name": "Artist One"}],
-          "album": {"id": "MPREb", "name": "Album Name"},
+          "album": {"id": "MPREb", "name": "Album Title"},
           "duration": 240000,
           "artwork": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg"
-        },
-        {
-          "id": "LXb3EKWsInQ",
-          "name": query + " - Result 2",
-          "artists": [{"id": "UC", "name": "Artist Two"}],
-          "album": {"id": "MPREb", "name": "Album Name"},
-          "duration": 180000,
-          "artwork": "https://i.ytimg.com/vi/LXb3EKWsInQ/mqdefault.jpg"
         }
-      ]
-    };
-  }
-
-  fun tracks(query, offset, limit) {
-    var result = this.all(query);
-    offset = offset ?? 0;
-    limit = limit ?? 20;
-    return {
-      "items": result["tracks"].slice(offset, offset + limit),
-      "total": 2,
+      ],
+      "total": 1,
       "hasMore": false
-    };
+    })
   }
 
-  fun albums(query, offset, limit) {
-    return {"items": [], "total": 0, "hasMore": false};
+  fun albums(query, {offset, limit}) {
+    return Future.resolve({
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    })
   }
 
-  fun artists(query, offset, limit) {
-    return {"items": [], "total": 0, "hasMore": false};
+  fun artists(query, {offset, limit}) {
+    return Future.resolve({
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    })
   }
 
-  fun playlists(query, offset, limit) {
-    return {"items": [], "total": 0, "hasMore": false};
+  fun playlists(query, {offset, limit}) {
+    return Future.resolve({
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    })
   }
 }
 
-export { SearchEndpoint };
+export { SearchEndpoint }

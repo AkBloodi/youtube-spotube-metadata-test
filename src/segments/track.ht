@@ -1,28 +1,32 @@
+import "module:std" as std
+
+var Future = std.Future
+
 class TrackEndpoint {
   construct() {}
 
   fun getTrack(id) {
-    var apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30";
-    return {
+    return Future.resolve({
       "id": id,
       "name": "Track " + id,
       "artists": [],
-      "album": {"id": "", "name": "YouTube Music"},
+      "album": {"id": "", "name": "Unknown"},
       "duration": 180000,
       "artwork": ""
-    };
+    })
   }
 
   fun save(ids) {
-    return {"status": "success"};
+    return Future.resolve({"status": "success"})
   }
 
   fun unsave(ids) {
-    return {"status": "success"};
+    return Future.resolve({"status": "success"})
   }
 
   fun radio(id) {
-    return {"items": [], "total": 0};
+    return Future.resolve({"items": [], "total": 0})
   }
 }
-export { TrackEndpoint };
+
+export { TrackEndpoint }

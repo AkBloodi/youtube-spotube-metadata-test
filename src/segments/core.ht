@@ -1,8 +1,13 @@
+import "module:std" as std
+
+var Future = std.Future
+
 class CoreEndpoint {
   construct() {}
 
   fun status() {
-    return {"status": "ok"};
+    return Future.resolve({"status": "ok"})
   }
 }
-export { CoreEndpoint };
+
+export { CoreEndpoint }

@@ -1,12 +1,17 @@
+import "module:std" as std
+
+var Future = std.Future
+
 class BrowseEndpoint {
   construct() {}
 
   fun charts() {
-    return {"items": [], "total": 0};
+    return Future.resolve({"items": []})
   }
 
   fun newRelease() {
-    return {"items": [], "total": 0};
+    return Future.resolve({"items": []})
   }
 }
-export { BrowseEndpoint };
+
+export { BrowseEndpoint }
