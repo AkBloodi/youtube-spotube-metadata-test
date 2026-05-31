@@ -1,64 +1,27 @@
-import "module:std" as std
-
-var HttpClient = std.HttpClient
-
 class TrackEndpoint {
-  var httpClient: HttpClient
-  final apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"
+  construct() {}
 
-  construct(this.httpClient) {}
-
-  fun getTrack(id: string) {
-    return httpClient.post_req(
-      "/player?key=" + apiKey,
-      body: {
-        "videoId": id,
-        "context": {
-          "client": {
-            "clientName": "WEB_REMIX",
-            "clientVersion": "1.20240522.01.00"
-          }
-        }
-      }.toJson()
-    ).then((res) {
-      var data = res.data
-      if (data == null) {
-        return {
-          "id": id,
-          "name": "Unknown Track",
-          "artists": [],
-          "album": {"id": "", "name": "YouTube Music"},
-          "duration": 0,
-          "artwork": ""
-        }.toJson()
-      }
-      
-      var details = data["videoDetails"]
-      var streamingData = data["streamingData"]
-      
-      var thumbnails = details?["thumbnail"]?["thumbnails"]
-      var artwork = thumbnails != null && thumbnails.isNotEmpty ? thumbnails[thumbnails.length - 1]["url"] ?? "" : ""
-      
-      return {
-        "id": id,
-        "name": details?["title"] ?? "Unknown",
-        "artists": [],
-        "album": {"id": "", "name": "YouTube Music"},
-        "duration": (int.parse(details?["lengthSeconds"] ?? "0")) * 1000,
-        "artwork": artwork
-      }.toJson()
-    })
+  fun getTrack(id) {
+    var apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30";
+    return {
+      "id": id,
+      "name": "Track " + id,
+      "artists": [],
+      "album": {"id": "", "name": "YouTube Music"},
+      "duration": 180000,
+      "artwork": ""
+    };
   }
 
-  fun save(ids: List) {
-    return {"status": "success"}.toJson()
+  fun save(ids) {
+    return {"status": "success"};
   }
 
-  fun unsave(ids: List) {
-    return {"status": "success"}.toJson()
+  fun unsave(ids) {
+    return {"status": "success"};
   }
 
-  fun radio(id: string) {
-    return {"items": [], "total": 0}.toJson()
+  fun radio(id) {
+    return {"items": [], "total": 0};
   }
 }

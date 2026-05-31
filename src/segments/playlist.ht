@@ -1,9 +1,15 @@
-import "module:std" as std
-
-var HttpClient = std.HttpClient
-
 class PlaylistEndpoint {
-  var httpClient: HttpClient
+  construct() {}
 
-  construct(this.httpClient) {}
+  fun getPlaylist(id) {
+    return {"items": [], "total": 0};
+  }
+
+  fun save(id) {
+    return {"status": "success"};
+  }
+
+  fun unsave(id) {
+    return {"status": "success"};
+  }
 }

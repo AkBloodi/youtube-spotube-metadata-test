@@ -1,9 +1,7 @@
-import "module:std" as std
-
-var HttpClient = std.HttpClient
-
 class AudioSourceEndpoint {
-  var httpClient: HttpClient
+  construct() {}
 
-  construct(this.httpClient) {}
+  fun streams(id) {
+    return [];
+  }
 }

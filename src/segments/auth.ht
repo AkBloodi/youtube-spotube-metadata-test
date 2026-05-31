@@ -1,9 +1,7 @@
-import "module:std" as std
-
-var HttpClient = std.HttpClient
-
 class AuthEndpoint {
-  var httpClient: HttpClient
+  construct() {}
 
-  construct(this.httpClient) {}
+  fun isAuth() {
+    return false;
+  }
 }

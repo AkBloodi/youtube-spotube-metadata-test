@@ -1,9 +1,7 @@
-import "module:std" as std
-
-var HttpClient = std.HttpClient
-
 class UserEndpoint {
-  var httpClient: HttpClient
+  construct() {}
 
-  construct(this.httpClient) {}
+  fun me() {
+    return {"id": "", "name": "Guest"};
+  }
 }

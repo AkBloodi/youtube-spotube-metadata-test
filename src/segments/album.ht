@@ -1,9 +1,7 @@
-import "module:std" as std
-
-var HttpClient = std.HttpClient
-
 class AlbumEndpoint {
-  var httpClient: HttpClient
+  var httpClient;
 
-  construct(this.httpClient) {}
+  construct(httpClient) {
+    this.httpClient = httpClient;
+  }
 }

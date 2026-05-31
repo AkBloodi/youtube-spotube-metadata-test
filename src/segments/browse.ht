@@ -1,9 +1,11 @@
-import "module:std" as std
-
-var HttpClient = std.HttpClient
-
 class BrowseEndpoint {
-  var httpClient: HttpClient
+  construct() {}
 
-  construct(this.httpClient) {}
+  fun charts() {
+    return {"items": [], "total": 0};
+  }
+
+  fun newRelease() {
+    return {"items": [], "total": 0};
+  }
 }

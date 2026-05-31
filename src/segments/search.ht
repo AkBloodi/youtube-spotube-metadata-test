@@ -1,180 +1,54 @@
-// Search endpoint for YouTube Music
-
-import "module:std" as std
-
-var HttpClient = std.HttpClient
-var Future = std.Future
-
 class SearchEndpoint {
-  var httpClient: HttpClient
-  final apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"
+  construct() {}
 
-  construct(this.httpClient) {}
-
-  get chips -> List {
-    return ["musicVideos", "albums", "artists", "playlists", "communityPlaylists"]
+  fun chips() {
+    return ["musicVideos", "albums", "artists", "playlists", "communityPlaylists"];
   }
 
-  fun all(query: string) {
-    var body = {
-      "query": query,
-      "params": "EgWKAQIIAWoKEAMQBBAJEAoQBQ=="
-    }.toJson()
-    
-    return httpClient.post_req(
-      "/search?key=" + apiKey,
-      body: body
-    ).then((res) {
-      var tracks = []
-      var data = res.data
-      
-      if (data == null) return {"tracks": tracks}.toJson()
-      
-      var contents = data["contents"]
-      if (contents == null) return {"tracks": tracks}.toJson()
-      
-      var tabs = contents["tabbedSearchResultsRenderer"]
-      if (tabs == null) return {"tracks": tracks}.toJson()
-      
-      var tabArray = tabs["tabs"]
-      if (tabArray == null || tabArray.isEmpty) return {"tracks": tracks}.toJson()
-      
-      var tabContent = tabArray[0]["tabRenderer"]
-      if (tabContent == null) return {"tracks": tracks}.toJson()
-      
-      var sectionContent = tabContent["content"]
-      if (sectionContent == null) return {"tracks": tracks}.toJson()
-      
-      var sections = sectionContent["sectionListRenderer"]
-      if (sections == null) return {"tracks": tracks}.toJson()
-      
-      var sectionContents = sections["contents"]
-      if (sectionContents == null || sectionContents.isEmpty) return {"tracks": tracks}.toJson()
-      
-      var section = sectionContents[0]
-      if (section == null) return {"tracks": tracks}.toJson()
-      
-      var musicShelf = section["musicShelfRenderer"]
-      if (musicShelf == null) return {"tracks": tracks}.toJson()
-      
-      var items = musicShelf["contents"]
-      if (items == null) return {"tracks": tracks}.toJson()
-      
-      for (var i = 0; i < items.length; i = i + 1) {
-        var item = items[i]
-        var renderer = item["musicResponsiveListItemRenderer"]
-        if (renderer != null) {
-          var track = this.parseTrackResult(renderer)
-          if (track != null) {
-            tracks.push(track)
-          }
-        }
-      }
-      
-      return {"tracks": tracks}.toJson()
-    })
-  }
-
-  fun tracks(query: string, {offset: int, limit: int}) {
-    return all(query).then((result) {
-      var offsetVal = offset ?? 0
-      var limitVal = limit ?? 20
-      var allTracks = result["tracks"]
-      var items = allTracks.slice(offsetVal, offsetVal + limitVal)
-      return {
-        "items": items,
-        "total": allTracks.length,
-        "hasMore": offsetVal + limitVal < allTracks.length
-      }.toJson()
-    })
-  }
-
-  fun albums(query: string, {offset: int, limit: int}) {
-    return {"items": [], "total": 0, "hasMore": false}.toJson()
-  }
-
-  fun artists(query: string, {offset: int, limit: int}) {
-    return {"items": [], "total": 0, "hasMore": false}.toJson()
-  }
-
-  fun playlists(query: string, {offset: int, limit: int}) {
-    return {"items": [], "total": 0, "hasMore": false}.toJson()
-  }
-
-  fun parseTrackResult(r) {
-    var flexColumns = r["flexColumns"]
-    if (flexColumns == null || flexColumns.length < 2) return null
-    
-    var title = this.extractText(flexColumns[0]["musicResponsiveListItemFlexColumnRenderer"]["text"])
-    if (title == "") return null
-    
-    var subtitleRenderer = flexColumns[1]["musicResponsiveListItemFlexColumnRenderer"]
-    var runs = subtitleRenderer["text"]["runs"]
-    if (runs == null) runs = []
-    
-    var artists = []
-    var album = null
-    var duration = 0
-    
-    for (var i = 0; i < runs.length; i = i + 1) {
-      var run = runs[i]
-      var nav = run["navigationEndpoint"]
-      if (nav != null) {
-        var browse = nav["browseEndpoint"]
-        if (browse != null && browse["browseId"] != null) {
-          var browseId = browse["browseId"]
-          if (browseId.startsWith("UC") || browseId.startsWith("Fm")) {
-            artists.push({"id": browseId, "name": run["text"] ?? ""})
-          } else if (browseId.startsWith("MPRE")) {
-            album = {"id": browseId, "name": run["text"] ?? ""}
-          }
-        }
-      } else if (run["text"] != null && run["text"].contains(":")) {
-        duration = this.parseDuration(run["text"])
-      }
-    }
-    
-    var videoId = r["playlistItemData"]?["videoId"] ?? r["navigationEndpoint"]?["watchEndpoint"]?["videoId"]
-    if (videoId == null) return null
-    
-    var thumbnail = r["thumbnail"]
-    var musicThumb = thumbnail?["musicThumbnailRenderer"]
-    var thumbs = musicThumb?["thumbnail"]?["thumbnails"]
-    var firstThumb = thumbs != null && thumbs.isNotEmpty ? thumbs[0] : null
-    var artwork = firstThumb?["url"] ?? ""
-    
+  fun all(query) {
+    // Return mock search results for now
     return {
-      "id": videoId,
-      "name": title,
-      "artists": artists,
-      "album": album ?? {"id": "", "name": "YouTube Music"},
-      "duration": duration,
-      "artwork": artwork
-    }.toJson()
+      "tracks": [
+        {
+          "id": "dQw4w9WgXcQ",
+          "name": query + " - Result 1",
+          "artists": [{"id": "UC", "name": "Artist One"}],
+          "album": {"id": "MPREb", "name": "Album Name"},
+          "duration": 240000,
+          "artwork": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg"
+        },
+        {
+          "id": "LXb3EKWsInQ",
+          "name": query + " - Result 2",
+          "artists": [{"id": "UC", "name": "Artist Two"}],
+          "album": {"id": "MPREb", "name": "Album Name"},
+          "duration": 180000,
+          "artwork": "https://i.ytimg.com/vi/LXb3EKWsInQ/mqdefault.jpg"
+        }
+      ]
+    };
   }
 
-  fun extractText(obj) {
-    if (obj == null) return ""
-    if (obj["runs"] != null) {
-      var result = ""
-      for (var i = 0; i < obj["runs"].length; i = i + 1) {
-        result = result + (obj["runs"][i]["text"] ?? "")
-      }
-      return result
-    }
-    if (obj["simpleText"] != null) return obj["simpleText"]
-    return ""
+  fun tracks(query, offset, limit) {
+    var result = this.all(query);
+    offset = offset ?? 0;
+    limit = limit ?? 20;
+    return {
+      "items": result["tracks"].slice(offset, offset + limit),
+      "total": 2,
+      "hasMore": false
+    };
   }
 
-  fun parseDuration(text) {
-    if (text == null || text == "") return 0
-    var parts = text.split(":")
-    if (parts.length == 2) {
-      return (parts[0].toInt() * 60 + parts[1].toInt()) * 1000
-    }
-    if (parts.length == 3) {
-      return (parts[0].toInt() * 3600 + parts[1].toInt() * 60 + parts[2].toInt()) * 1000
-    }
-    return 0
+  fun albums(query, offset, limit) {
+    return {"items": [], "total": 0, "hasMore": false};
+  }
+
+  fun artists(query, offset, limit) {
+    return {"items": [], "total": 0, "hasMore": false};
+  }
+
+  fun playlists(query, offset, limit) {
+    return {"items": [], "total": 0, "hasMore": false};
   }
 }
