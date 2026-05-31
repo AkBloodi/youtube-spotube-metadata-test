@@ -21,12 +21,18 @@ class SearchEndpoint {
       "params": "EgWKAQIIAWoKEAMQBBAJEAoQBQ=="
     });
     
-    var items = data["contents"]?.["tabbedSearchResultsRenderer"]?.["tabs"]?[0]?.["tabRenderer"]?.["content"]?.["sectionListRenderer"]?.["contents"]?[0]?.["musicShelfRenderer"]?.["contents"] ?? [];
+    var tabs = this.get(data, ["contents", "tabbedSearchResultsRenderer", "tabs"]);
+    var tab = this.get(tabs, [0]);
+    var content = this.get(tab, ["tabRenderer", "content"]);
+    var sections = this.get(content, ["sectionListRenderer", "contents"]);
+    var section = this.get(sections, [0]);
+    var musicShelf = this.get(section, ["musicShelfRenderer"]);
+    var items = this.get(musicShelf, ["contents"]) ?? [];
     
     var tracks = [];
     for (var i = 0; i < items.length; i = i + 1) {
       var item = items[i];
-      var r = item["musicResponsiveListItemRenderer"];
+      var r = this.get(item, ["musicResponsiveListItemRenderer"]);
       if (r != null) {
         var track = this.parseTrackResult(r);
         if (track != null) {
@@ -75,10 +81,12 @@ class SearchEndpoint {
   }
 
   fun parseTrackResult(r) {
-    var title = this.t(r["flexColumns"]?[0]?.["musicResponsiveListItemFlexColumnRenderer"]?.["text"]);
+    var flex0 = this.get(r, ["flexColumns", 0, "musicResponsiveListItemFlexColumnRenderer", "text"]);
+    var title = this.t(flex0);
     if (title == "") return null;
     
-    var subtitleRuns = r["flexColumns"]?[1]?.["musicResponsiveListItemFlexColumnRenderer"]?.["text"]?.["runs"] ?? [];
+    var flex1 = this.get(r, ["flexColumns", 1, "musicResponsiveListItemFlexColumnRenderer", "text"]);
+    var subtitleRuns = this.get(flex1, ["runs"]) ?? [];
     
     var artists = [];
     var album = null;
@@ -86,20 +94,29 @@ class SearchEndpoint {
     
     for (var i = 0; i < subtitleRuns.length; i = i + 1) {
       var run = subtitleRuns[i];
-      var browseId = run["navigationEndpoint"]?.["browseEndpoint"]?.["browseId"];
+      var nav = this.get(run, ["navigationEndpoint", "browseEndpoint"]);
+      var browseId = this.get(nav, ["browseId"]);
       if (browseId != null) {
         if (browseId.startsWith("UC") || browseId.startsWith("Fm")) {
           artists.push({"id": browseId, "name": run["text"] ?? ""});
         } else if (browseId.startsWith("MPRE")) {
           album = {"id": browseId, "name": run["text"] ?? ""};
         }
-      } else if (run["text"]?.contains(":") == true) {
+      } else if (run["text"] != null && run["text"].contains(":")) {
         duration = this.parseDuration(run["text"]);
       }
     }
     
-    var id = r["playlistItemData"]?.["videoId"] ?? r["navigationEndpoint"]?.["watchEndpoint"]?.["videoId"];
+    var playlistData = this.get(r, ["playlistItemData"]);
+    var id = this.get(playlistData, ["videoId"]);
+    if (id == null) {
+      var watchNav = this.get(r, ["navigationEndpoint", "watchEndpoint"]);
+      id = this.get(watchNav, ["videoId"]);
+    }
     if (id == null) return null;
+    
+    var thumb = this.get(r, ["thumbnail", "musicThumbnailRenderer", "thumbnail", "thumbnails", 0]);
+    var artwork = this.get(thumb, ["url"]) ?? "";
     
     return {
       "id": id,
@@ -107,8 +124,24 @@ class SearchEndpoint {
       "artists": artists,
       "album": album ?? {"id": "", "name": "YouTube Music"},
       "duration": duration,
-      "artwork": r["thumbnail"]?.["musicThumbnailRenderer"]?.["thumbnail"]?.["thumbnails"]?[0]?.["url"] ?? ""
+      "artwork": artwork
     };
+  }
+
+  fun get(obj, path) {
+    var current = obj;
+    for (var i = 0; i < path.length; i = i + 1) {
+      if (current == null) return null;
+      var key = path[i];
+      if (current is Map) {
+        current = current[key];
+      } else if (current is List) {
+        current = current[key];
+      } else {
+        return null;
+      }
+    }
+    return current;
   }
 
   fun request(endpoint, body) {
@@ -124,13 +157,10 @@ class SearchEndpoint {
       }
     };
     
-    // Merge body into payload
     for (var key in body) {
       payload[key] = body[key];
     }
     
-    // Note: This is a mock implementation
-    // In real usage, you'd use fetch() or an HTTP library
     return {};
   }
 
