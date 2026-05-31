@@ -13,8 +13,6 @@ import { BrowseEndpoint } from './segments/browse.ht';
 import { UserEndpoint } from './segments/user.ht';
 import { CoreEndpoint } from './segments/core.ht';
 
-var Future = std.Future
-
 class YouTubeMetadataPlugin {
   var auth;
   var audioSource;

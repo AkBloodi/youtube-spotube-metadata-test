@@ -1,12 +1,10 @@
 import "module:std" as std
 
-var Future = std.Future
-
 class PlaylistEndpoint {
   construct() {}
 
   fun getPlaylist(id) {
-    return Future.resolve({
+    return std.Future.resolve({
       "id": id,
       "name": "Playlist " + id,
       "artwork": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
@@ -16,11 +14,11 @@ class PlaylistEndpoint {
   }
 
   fun save(id) {
-    return Future.resolve({"status": "success"}.toJson())
+    return std.Future.resolve({"status": "success"}.toJson())
   }
 
   fun unsave(id) {
-    return Future.resolve({"status": "success"}.toJson())
+    return std.Future.resolve({"status": "success"}.toJson())
   }
 }
 

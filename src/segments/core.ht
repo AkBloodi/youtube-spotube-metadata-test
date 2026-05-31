@@ -1,12 +1,10 @@
 import "module:std" as std
 
-var Future = std.Future
-
 class CoreEndpoint {
   construct() {}
 
   fun status() {
-    return Future.resolve({"status": "ok"}.toJson())
+    return std.Future.resolve({"status": "ok"}.toJson())
   }
 }
 

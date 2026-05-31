@@ -1,12 +1,10 @@
 import "module:std" as std
 
-var Future = std.Future
-
 class AlbumEndpoint {
   construct() {}
 
   fun getAlbum(id) {
-    return Future.resolve({
+    return std.Future.resolve({
       "id": id,
       "name": "Album " + id,
       "artists": [{"id": "UC123", "name": "Artist"}],
@@ -16,14 +14,14 @@ class AlbumEndpoint {
   }
 
   fun tracks(id, {offset, limit}) {
-    return Future.resolve({
+    return std.Future.resolve({
       "items": [],
       "total": 0
     }.toJson())
   }
 
   fun save(id) {
-    return Future.resolve({"status": "success"}.toJson())
+    return std.Future.resolve({"status": "success"}.toJson())
   }
 }
 

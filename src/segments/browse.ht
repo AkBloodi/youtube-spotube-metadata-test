@@ -1,12 +1,10 @@
 import "module:std" as std
 
-var Future = std.Future
-
 class BrowseEndpoint {
   construct() {}
 
   fun charts() {
-    return Future.resolve({
+    return std.Future.resolve({
       "items": [
         {
           "id": "dQw4w9WgXcQ",
@@ -19,7 +17,7 @@ class BrowseEndpoint {
   }
 
   fun newRelease() {
-    return Future.resolve({
+    return std.Future.resolve({
       "items": [
         {
           "id": "MPREb123",

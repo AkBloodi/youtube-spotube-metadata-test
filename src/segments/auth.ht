@@ -1,12 +1,10 @@
 import "module:std" as std
 
-var Future = std.Future
-
 class AuthEndpoint {
   construct() {}
 
   fun isAuth() {
-    return Future.resolve(false)
+    return std.Future.resolve(false)
   }
 }
 

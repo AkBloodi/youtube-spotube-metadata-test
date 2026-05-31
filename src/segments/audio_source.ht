@@ -1,12 +1,10 @@
 import "module:std" as std
 
-var Future = std.Future
-
 class AudioSourceEndpoint {
   construct() {}
 
   fun streams(id) {
-    return Future.resolve([])
+    return std.Future.resolve([])
   }
 }
 
