@@ -1,46 +1,9 @@
-// Playlist endpoint for YouTube Music metadata
+import "module:std" as std
+
+var HttpClient = std.HttpClient
 
 class PlaylistEndpoint {
-  var apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30";
-  var baseUrl = "https://music.youtube.com/youtubei/v1";
+  var httpClient: HttpClient
 
-  fun getPlaylist(id) {
-    return {
-      "id": id,
-      "name": "Playlist " + id,
-      "description": "",
-      "author": {"id": "", "name": "YouTube Music"},
-      "artwork": "",
-      "tracks": [],
-      "trackCount": 0
-    };
-  }
-
-  fun tracks(id, offset, limit) {
-    return {
-      "items": [],
-      "total": 0,
-      "hasMore": false
-    };
-  }
-
-  fun createPlaylist(userId, name, description, isPublic, collaborative) {
-    return null;
-  }
-
-  fun updatePlaylist(playlistId, name, description, isPublic, collaborative) {}
-
-  fun deletePlaylist(playlistId) {}
-
-  fun addTracks(playlistId, trackIds, position) {}
-
-  fun removeTracks(playlistId, trackIds) {}
-
-  fun save(playlistId) {}
-
-  fun unsave(playlistId) {}
-
-  fun request(endpoint, body) {
-    return {};
-  }
+  construct(this.httpClient) {}
 }

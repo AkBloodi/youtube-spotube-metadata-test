@@ -1,16 +1,9 @@
-// Auth endpoint for YouTube Music
+import "module:std" as std
+
+var HttpClient = std.HttpClient
 
 class AuthEndpoint {
-  fun onAuthEvent() {}
+  var httpClient: HttpClient
 
-  fun authenticate() {
-    // YouTube Music doesn't require auth for metadata
-    // This is a passthrough plugin
-  }
-
-  fun logout() {}
-
-  fun isAuthenticated() {
-    return true; // Metadata doesn't require auth
-  }
+  construct(this.httpClient) {}
 }

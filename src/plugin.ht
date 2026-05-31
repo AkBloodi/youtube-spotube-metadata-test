@@ -1,6 +1,8 @@
 // YouTube Music Metadata Provider Plugin for Spotube
 // Uses hetu_script (Dart-based scripting language)
 
+import "module:std" as std
+
 import "segments/search.ht";
 import "segments/track.ht";
 import "segments/album.ht";
@@ -11,6 +13,9 @@ import "segments/auth.ht";
 import "segments/browse.ht";
 import "segments/user.ht";
 import "segments/core.ht";
+
+var HttpClient = std.HttpClient
+var HttpBaseOptions = std.HttpBaseOptions
 
 class YouTubeMetadataPlugin {
   var auth;
@@ -23,18 +28,22 @@ class YouTubeMetadataPlugin {
   var track;
   var user;
   var core;
+  
+  var httpClient;
 
   construct() {
-    this.auth = AuthEndpoint();
+    httpClient = HttpClient(HttpBaseOptions(baseUrl: "https://music.youtube.com/youtubei/v1"))
+    
+    this.auth = AuthEndpoint(httpClient);
     this.audioSource = AudioSourceEndpoint();
-    this.album = AlbumEndpoint();
-    this.artist = ArtistEndpoint();
-    this.browse = BrowseEndpoint();
-    this.core = CoreEndpoint();
-    this.playlist = PlaylistEndpoint();
-    this.search = SearchEndpoint();
-    this.track = TrackEndpoint();
-    this.user = UserEndpoint();
+    this.album = AlbumEndpoint(httpClient);
+    this.artist = ArtistEndpoint(httpClient);
+    this.browse = BrowseEndpoint(httpClient);
+    this.core = CoreEndpoint(httpClient);
+    this.playlist = PlaylistEndpoint(httpClient);
+    this.search = SearchEndpoint(httpClient);
+    this.track = TrackEndpoint(httpClient);
+    this.user = UserEndpoint(httpClient);
   }
 
   fun onLoad() {

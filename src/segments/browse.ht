@@ -1,26 +1,9 @@
-// Browse endpoint for YouTube Music metadata
+import "module:std" as std
+
+var HttpClient = std.HttpClient
 
 class BrowseEndpoint {
-  var apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30";
-  var baseUrl = "https://music.youtube.com/youtubei/v1";
+  var httpClient: HttpClient
 
-  fun sections(offset, limit) {
-    return {
-      "items": [],
-      "total": 0,
-      "hasMore": false
-    };
-  }
-
-  fun sectionItems(id, offset, limit) {
-    return {
-      "items": [],
-      "total": 0,
-      "hasMore": false
-    };
-  }
-
-  fun request(endpoint, body) {
-    return {};
-  }
+  construct(this.httpClient) {}
 }

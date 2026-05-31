@@ -1,37 +1,64 @@
-// Track endpoint for YouTube Music metadata
-// Fetches track details from YouTube Music API
+import "module:std" as std
+
+var HttpClient = std.HttpClient
 
 class TrackEndpoint {
-  var apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30";
-  var baseUrl = "https://music.youtube.com/youtubei/v1";
+  var httpClient: HttpClient
+  final apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30"
 
-  fun getTrack(id) {
-    // Return a mock track for now
-    return {
-      "id": id,
-      "name": "Track " + id,
-      "artists": [{"id": "", "name": "YouTube Music Artist"}],
-      "album": {"id": "", "name": "YouTube Music Album"},
-      "duration": 180000,
-      "artwork": ""
-    };
+  construct(this.httpClient) {}
+
+  fun getTrack(id: string) {
+    return httpClient.post_req(
+      "/player?key=" + apiKey,
+      body: {
+        "videoId": id,
+        "context": {
+          "client": {
+            "clientName": "WEB_REMIX",
+            "clientVersion": "1.20240522.01.00"
+          }
+        }
+      }.toJson()
+    ).then((res) {
+      var data = res.data
+      if (data == null) {
+        return {
+          "id": id,
+          "name": "Unknown Track",
+          "artists": [],
+          "album": {"id": "", "name": "YouTube Music"},
+          "duration": 0,
+          "artwork": ""
+        }.toJson()
+      }
+      
+      var details = data["videoDetails"]
+      var streamingData = data["streamingData"]
+      
+      var thumbnails = details?["thumbnail"]?["thumbnails"]
+      var artwork = thumbnails != null && thumbnails.isNotEmpty ? thumbnails[thumbnails.length - 1]["url"] ?? "" : ""
+      
+      return {
+        "id": id,
+        "name": details?["title"] ?? "Unknown",
+        "artists": [],
+        "album": {"id": "", "name": "YouTube Music"},
+        "duration": (int.parse(details?["lengthSeconds"] ?? "0")) * 1000,
+        "artwork": artwork
+      }.toJson()
+    })
   }
 
-  fun save(ids) {
-    // Save tracks (mock implementation)
+  fun save(ids: List) {
+    return {"status": "success"}.toJson()
   }
 
-  fun unsave(ids) {
-    // Unsave tracks (mock implementation)
+  fun unsave(ids: List) {
+    return {"status": "success"}.toJson()
   }
 
-  fun radio(id) {
-    // Get radio tracks (mock implementation)
-    return [];
-  }
-
-  fun request(endpoint, body) {
-    // HTTP request helper (mock implementation)
-    return {};
+  fun radio(id: string) {
+    return {"items": [], "total": 0}.toJson()
   }
 }

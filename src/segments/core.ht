@@ -1,15 +1,9 @@
-// Core endpoint for YouTube Music metadata plugin
+import "module:std" as std
+
+var HttpClient = std.HttpClient
 
 class CoreEndpoint {
-  fun checkUpdate(pluginConfig) {
-    return null; // No update available
-  }
+  var httpClient: HttpClient
 
-  fun support() {
-    return "https://github.com/AkBloodi/youtube-spotube-metadata";
-  }
-
-  fun scrobble(details) {
-    // Scrobbling not implemented
-  }
+  construct(this.httpClient) {}
 }

@@ -1,40 +1,9 @@
-// Album endpoint for YouTube Music metadata
+import "module:std" as std
+
+var HttpClient = std.HttpClient
 
 class AlbumEndpoint {
-  var apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30";
-  var baseUrl = "https://music.youtube.com/youtubei/v1";
+  var httpClient: HttpClient
 
-  fun getAlbum(id) {
-    return {
-      "id": id,
-      "name": "Album " + id,
-      "artists": [{"id": "", "name": "YouTube Music Artist"}],
-      "artwork": "",
-      "tracks": []
-    };
-  }
-
-  fun tracks(id, offset, limit) {
-    return {
-      "items": [],
-      "total": 0,
-      "hasMore": false
-    };
-  }
-
-  fun releases(offset, limit) {
-    return {
-      "items": [],
-      "total": 0,
-      "hasMore": false
-    };
-  }
-
-  fun save(ids) {}
-
-  fun unsave(ids) {}
-
-  fun request(endpoint, body) {
-    return {};
-  }
+  construct(this.httpClient) {}
 }
