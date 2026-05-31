@@ -1,0 +1,50 @@
+// Artist endpoint for YouTube Music metadata
+
+class ArtistEndpoint {
+  var apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30";
+  var baseUrl = "https://music.youtube.com/youtubei/v1";
+
+  fun getArtist(id) {
+    return {
+      "id": id,
+      "name": "Artist " + id,
+      "artwork": "",
+      "topTracks": [],
+      "albums": {"items": [], "total": 0, "hasMore": false},
+      "singles": {"items": [], "total": 0, "hasMore": false},
+      "related": {"items": [], "total": 0, "hasMore": false}
+    };
+  }
+
+  fun topTracks(id, offset, limit) {
+    return {
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    };
+  }
+
+  fun albums(id, offset, limit) {
+    return {
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    };
+  }
+
+  fun related(id, offset, limit) {
+    return {
+      "items": [],
+      "total": 0,
+      "hasMore": false
+    };
+  }
+
+  fun save(ids) {}
+
+  fun unsave(ids) {}
+
+  fun request(endpoint, body) {
+    return {};
+  }
+}

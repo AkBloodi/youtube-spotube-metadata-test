@@ -1,0 +1,13 @@
+# Build output
+build/
+*.smplug
+
+# Dependencies
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store

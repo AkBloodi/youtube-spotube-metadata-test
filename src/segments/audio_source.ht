@@ -1,0 +1,23 @@
+// Audio source endpoint for YouTube Music
+// Handles streaming URL generation
+
+class AudioSourceEndpoint {
+  var apiKey = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30";
+  var baseUrl = "https://music.youtube.com/youtubei/v1";
+
+  fun supportedPresets() {
+    return [
+      {"id": "spotify", "name": "Spotify", "color": "#1DB954"},
+      {"id": "youtube", "name": "YouTube", "color": "#FF0000"},
+      {"id": "soundcloud", "name": "SoundCloud", "color": "#FF5500"}
+    ];
+  }
+
+  fun matches(track) {
+    return [];
+  }
+
+  fun streams(matched) {
+    return [];
+  }
+}

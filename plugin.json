@@ -1,12 +1,13 @@
 {
-  "id": "youtube-metadata-provider",
+  "id": "com.akbloodi.youtube-metadata",
   "name": "YouTube Music Metadata",
   "version": "1.0.0",
-  "author": "Gemini CLI",
-  "description": "Provee metadatos de canciones, álbumes y artistas desde YouTube Music",
+  "author": "AkBloodi",
+  "description": "YouTube Music Metadata provider for Spotube - enables searching and browsing YouTube Music content",
+  "license": "MIT",
+  "repository": "https://github.com/AkBloodi/youtube-spotube-metadata-test",
   "entryPoint": "YouTubeMetadataPlugin",
-  "abilities": ["metadata"],
-  "apis": ["localstorage"],
   "pluginApiVersion": "2.0.0",
-  "repository": "https://github.com/pablo/spotube-youtube-plugin"
+  "apis": [],
+  "abilities": ["metadata"]
 }
