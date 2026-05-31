@@ -6,7 +6,7 @@ class UserEndpoint {
   construct() {}
 
   fun me() {
-    return Future.resolve({"id": "", "name": "Guest"})
+    return Future.resolve({"id": "", "name": "Guest"}.toJson())
   }
 }
 

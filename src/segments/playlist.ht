@@ -6,15 +6,21 @@ class PlaylistEndpoint {
   construct() {}
 
   fun getPlaylist(id) {
-    return Future.resolve({"items": [], "total": 0})
+    return Future.resolve({
+      "id": id,
+      "name": "Playlist " + id,
+      "artwork": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
+      "items": [],
+      "total": 0
+    }.toJson())
   }
 
   fun save(id) {
-    return Future.resolve({"status": "success"})
+    return Future.resolve({"status": "success"}.toJson())
   }
 
   fun unsave(id) {
-    return Future.resolve({"status": "success"})
+    return Future.resolve({"status": "success"}.toJson())
   }
 }
 

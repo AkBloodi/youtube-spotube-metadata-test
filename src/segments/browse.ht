@@ -6,11 +6,29 @@ class BrowseEndpoint {
   construct() {}
 
   fun charts() {
-    return Future.resolve({"items": []})
+    return Future.resolve({
+      "items": [
+        {
+          "id": "dQw4w9WgXcQ",
+          "name": "Top Song",
+          "artists": [{"id": "UC123", "name": "Artist"}],
+          "artwork": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg"
+        }
+      ]
+    }.toJson())
   }
 
   fun newRelease() {
-    return Future.resolve({"items": []})
+    return Future.resolve({
+      "items": [
+        {
+          "id": "MPREb123",
+          "name": "New Album",
+          "artists": [{"id": "UC123", "name": "Artist"}],
+          "artwork": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg"
+        }
+      ]
+    }.toJson())
   }
 }
 

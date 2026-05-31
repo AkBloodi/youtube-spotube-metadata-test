@@ -9,23 +9,23 @@ class TrackEndpoint {
     return Future.resolve({
       "id": id,
       "name": "Track " + id,
-      "artists": [],
-      "album": {"id": "", "name": "Unknown"},
-      "duration": 180000,
-      "artwork": ""
-    })
+      "artists": [{"id": "UC123", "name": "Artist"}],
+      "album": {"id": "MPREb123", "name": "Album"},
+      "duration": 240000,
+      "artwork": "https://i.ytimg.com/vi/" + id + "/mqdefault.jpg"
+    }.toJson())
   }
 
   fun save(ids) {
-    return Future.resolve({"status": "success"})
+    return Future.resolve({"status": "success"}.toJson())
   }
 
   fun unsave(ids) {
-    return Future.resolve({"status": "success"})
+    return Future.resolve({"status": "success"}.toJson())
   }
 
   fun radio(id) {
-    return Future.resolve({"items": [], "total": 0})
+    return Future.resolve({"items": [], "total": 0}.toJson())
   }
 }
 

@@ -13,21 +13,15 @@ class SearchEndpoint {
     return Future.wait([
       this.playlists(query),
       this.tracks(query),
+      this.artists(query),
+      this.albums(query),
     ]).then((results) {
-      var playlistRes = results[0]["items"]
-      var trackRes = results[1]["items"]
-      return this.artists(query).then((ares) {
-        var artistRes = ares["items"]
-        return this.albums(query).then((bres) {
-          var albumRes = bres["items"]
-          return {
-            "playlists": playlistRes,
-            "tracks": trackRes,
-            "artists": artistRes,
-            "albums": albumRes
-          }
-        })
-      })
+      return {
+        "playlists": results[0]["items"],
+        "tracks": results[1]["items"],
+        "artists": results[2]["items"],
+        "albums": results[3]["items"]
+      }.toJson()
     })
   }
 
@@ -36,32 +30,46 @@ class SearchEndpoint {
       "items": [
         {
           "id": "dQw4w9WgXcQ",
-          "name": query + " - Result 1",
-          "artists": [{"id": "UC", "name": "Artist One"}],
-          "album": {"id": "MPREb", "name": "Album Title"},
+          "name": query + " - Song Title",
+          "artists": [{"id": "UC123", "name": "Artist Name"}],
+          "album": {"id": "MPREb_abc123", "name": "Album Name"},
           "duration": 240000,
           "artwork": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg"
         }
       ],
       "total": 1,
       "hasMore": false
-    })
+    }.toJson())
   }
 
   fun albums(query, {offset, limit}) {
     return Future.resolve({
-      "items": [],
-      "total": 0,
+      "items": [
+        {
+          "id": "MPREb_xyz789",
+          "name": query + " - Album Title",
+          "artists": [{"id": "UC123", "name": "Artist Name"}],
+          "artwork": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
+          "year": 2024
+        }
+      ],
+      "total": 1,
       "hasMore": false
-    })
+    }.toJson())
   }
 
   fun artists(query, {offset, limit}) {
     return Future.resolve({
-      "items": [],
-      "total": 0,
+      "items": [
+        {
+          "id": "UC123456789",
+          "name": query + " - Artist Name",
+          "artwork": "https://i.ytimg.com/vi/dQw4w9WgXcQ/mqdefault.jpg"
+        }
+      ],
+      "total": 1,
       "hasMore": false
-    })
+    }.toJson())
   }
 
   fun playlists(query, {offset, limit}) {
@@ -69,7 +77,7 @@ class SearchEndpoint {
       "items": [],
       "total": 0,
       "hasMore": false
-    })
+    }.toJson())
   }
 }
 

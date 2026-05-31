@@ -6,7 +6,7 @@ class CoreEndpoint {
   construct() {}
 
   fun status() {
-    return Future.resolve({"status": "ok"})
+    return Future.resolve({"status": "ok"}.toJson())
   }
 }
 
