@@ -31,23 +31,19 @@ jobs:
       - name: Add Pub Bin to Path
         run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
 
-      - name: Build plugin
-        run: |
-          mkdir -p build
-          hetu compile src/plugin.ht build/plugin.out
-
-      - name: Package plugin
+      - name: Build and Package plugin
         run: |
           mkdir -p build/archive
+          hetu compile src/plugin.ht build/plugin.out
           cp plugin.json build/plugin.out build/archive/
-          cd build/archive && zip -r ../spotube-youtube-metadata.smplug .
-          mv build/spotube-youtube-metadata.smplug ./spotube-youtube-metadata.smplug
+          cd build/archive && python3 -m zipfile -c ../spotube-youtube-metadata.smplug plugin.json plugin.out
+          ls -la ../
 
       - name: Upload plugin archive
         uses: actions/upload-artifact@v4
         with:
           name: plugin-archive
-          path: spotube-youtube-metadata.smplug
+          path: build/spotube-youtube-metadata.smplug
 
       - name: Create Release
         if: github.event_name == 'workflow_dispatch'
@@ -59,4 +55,4 @@ jobs:
           omitNameDuringUpdate: true
           omitPrereleaseDuringUpdate: true
           allowUpdates: true
-          artifacts: spotube-youtube-metadata.smplug
+          artifacts: build/spotube-youtube-metadata.smplug
