@@ -1,13 +1,15 @@
 {
   "name": "spotube-youtube-plugin",
   "version": "1.0.0",
-  "description": "",
+  "description": "YouTube Music metadata provider plugin for Spotube",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.js",
+    "package": "node package.js",
+    "all": "npm run build && npm run package"
   },
   "keywords": [],
-  "author": "",
+  "author": "pablo",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {

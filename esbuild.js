@@ -1,11 +1,13 @@
 const { build } = require('esbuild');
 const path = require('path');
-const { entryPoint } = require('./plugin.json');
+
+const entryPoint = process.argv[2] || 'src/index.ts';
+const outfile = process.argv[3] || 'index.js';
 
 build({
-  entryPoints: [path.join(__dirname, 'src', 'index.ts')],
+  entryPoints: [path.join(__dirname, entryPoint)],
   bundle: true,
-  outfile: path.join(__dirname, 'index.js'),
+  outfile: path.join(__dirname, outfile),
   format: 'iife',
   globalName: 'PluginModule',
   footer: {
